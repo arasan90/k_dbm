@@ -1,0 +1,23 @@
+{
+    "version": 4,
+    "configurePresets": [
+        {
+            "name": "host",
+            "displayName": "Host",
+            "description": "Host compilation",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "K_DBM_DEV": true
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "Host",
+            "configurePreset": "host",
+            "jobs": 4
+        }
+    ]
+}
