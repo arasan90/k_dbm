@@ -16,7 +16,6 @@ set(public_linked_libs
 )
 
 set(private_linked_libs
-    k_cjson
     )
 
 function(k_dbm_get_sources OUT_VAR)
