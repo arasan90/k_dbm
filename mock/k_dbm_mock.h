@@ -19,6 +19,7 @@ extern "C"
 /* Constant ------------------------------------------------------------------*/
 /* Variable ------------------------------------------------------------------*/
 /* Function Declaration ------------------------------------------------------*/
+DECLARE_FAKE_VALUE_FUNC(int, k_dbm_init, const k_dbm_config_t *)
 
 #ifdef __cplusplus
 }
