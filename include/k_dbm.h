@@ -24,8 +24,9 @@ extern "C"
  */
 typedef enum
 {
-	K_DBM_STORAGE_RAM,	//!< Use RAM for storage
-	K_DBM_STORAGE_NVM	//!< Use Non-Volatile Memory for storage
+	K_DBM_STORAGE_NONE,	 //!< Internal use
+	K_DBM_STORAGE_NVM,	 //!< Use Non-Volatile Memory for storage. Entries in NVM are also cached in RAM
+	K_DBM_STORAGE_RAM,	 //!< Use RAM for storage
 } k_dbm_storage_t;
 
 /**
@@ -49,11 +50,10 @@ typedef void (*k_dbm_unlock_mutex_t)(void);
  *
  * @param key The key to insert
  * @param value The value associated with the key
- * @param storage The storage type to use for the insertion
  *
  * @return Returns 0 on success, -1 on failure
  */
-typedef int (*k_dbm_insert_t)(const char *key, const char *value, k_dbm_storage_t storage);
+typedef int (*k_dbm_insert_t)(const char *key, const char *value);
 
 /**
  * @brief Function pointer type for retrieving a value by key from the database
@@ -91,7 +91,41 @@ typedef struct
 /* Constant ------------------------------------------------------------------*/
 /* Variable ------------------------------------------------------------------*/
 /* Function Declaration ------------------------------------------------------*/
-int k_dbm_init(const k_dbm_config_t *config);
+/**
+ * @brief Initializes the Database Manager with the provided configuration
+ *
+ * This function initializes the Database Manager by setting up the required function pointers
+ * for mutex operations and database operations. It validates that all required function
+ * pointers are provided in the configuration structure.
+ *
+ * @param config_p Pointer to a k_dbm_config_t structure containing the following function pointers:
+ *                 - k_dbm_lock_mutex_f: Function for mutex locking
+ *                 - k_dbm_unlock_mutex_f: Function for mutex unlocking
+ *                 - k_dbm_insert_f: Function for inserting key-value pairs
+ *                 - k_dbm_get_f: Function for retrieving values by key
+ *                 - k_dbm_delete_f: Function for deleting key-value pairs
+ *
+ * @note Configuration will be copied
+ * @return Returns 0 on successful initialization
+ *         Returns -1 if:
+ *         - config_p is NULL
+ *         - Any of the required function pointers in config_p is NULL
+ *
+ * @note All function pointers in the configuration structure must be valid (non-NULL)
+ *       for successful initialization.
+ */
+
+int k_dbm_init(const k_dbm_config_t *config_p);
+
+/**
+ *@ brief Insert a key-value pair entry into the DB
+ *
+ * @param key_p Entry key
+ * @param value_p Entry value
+ * @param storage Storage where the pair will be saved
+ * @return 0 in case of success, -1 otherwise
+ */
+int k_dbm_insert(const char *key_p, const char *value_p, k_dbm_storage_t storage);
 
 #ifdef __cplusplus
 }

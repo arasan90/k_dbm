@@ -9,7 +9,8 @@
             "binaryDir": "${sourceDir}/build/",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
-                "K_DBM_DEV": true
+                "K_DBM_DEV": true,
+                "K_DBM_DB_SIZE": "64"
             }
         }
     ],
