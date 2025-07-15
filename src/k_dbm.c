@@ -7,6 +7,7 @@
 /* Include -------------------------------------------------------------------*/
 #include "k_dbm.h"
 
+#include <stdio.h>
 #include <string.h>
 
 #include "k_dbm_priv.h"
@@ -37,7 +38,7 @@ int k_dbm_init(const k_dbm_config_t *config_p)
 int k_dbm_insert(const char *key_p, const char *value_p, k_dbm_storage_t storage)
 {
 	int ret_code = -1;
-	if (key_p && value_p && K_DBM_STORAGE_NONE != storage)
+	if (key_p && value_p && strlen(value_p) < K_DBM_VALUE_MAX_LENGTH && K_DBM_STORAGE_NONE != storage)
 	{
 		k_dbm_context.config.k_dbm_lock_mutex_f(K_DBM_LOCK_MUTEX_INFINITE_TIMEOUT);
 		const int first_free_entry = k_dbm_find_first_empty_entry();
@@ -157,6 +158,19 @@ int k_dbm_delete(const char *key_p)
 		k_dbm_context.config.k_dbm_unlock_mutex_f();
 	}
 	return ret_code;
+}
+
+size_t k_dbm_get_free_space(void)
+{
+	size_t free_count = 0;
+	for (size_t i = 0; i < k_dbm_context.db.db_size; i++)
+	{
+		if (K_DBM_STORAGE_NONE == k_dbm_context.db.entries_a[i].storage)
+		{
+			free_count++;
+		}
+	}
+	return free_count;
 }
 
 int k_dbm_find_first_empty_entry(void)

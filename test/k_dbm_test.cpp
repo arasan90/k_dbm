@@ -330,3 +330,21 @@ TEST_F(k_dbmTest, deleteExistingKeyInNVMFail)
 	EXPECT_EQ(delete_from_nvm_count, 1);
 	EXPECT_NE(k_dbm_find_entry("key_delete_fail"), -1);
 }
+
+TEST_F(k_dbmTest, getDbEmpty)
+{
+	size_t free_space = k_dbm_get_free_space();
+	EXPECT_EQ(free_space, K_DBM_DB_SIZE);
+}
+
+TEST_F(k_dbmTest, getDbWithEntries)
+{
+	EXPECT_EQ(k_dbm_insert("key1", "value1", K_DBM_STORAGE_RAM), 0);
+	EXPECT_EQ(k_dbm_insert("key2", "value2", K_DBM_STORAGE_NVM), 0);
+	EXPECT_EQ(k_dbm_insert("key3", "value3", K_DBM_STORAGE_RAM), 0);
+	size_t free_space = k_dbm_get_free_space();
+	EXPECT_EQ(free_space, K_DBM_DB_SIZE - 3);
+	EXPECT_NE(k_dbm_find_entry("key1"), -1);
+	EXPECT_NE(k_dbm_find_entry("key2"), -1);
+	EXPECT_NE(k_dbm_find_entry("key3"), -1);
+}

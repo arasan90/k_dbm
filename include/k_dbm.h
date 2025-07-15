@@ -60,6 +60,8 @@ typedef int (*k_dbm_insert_t)(const char *key, const char *value);
 /**
  * @brief Function pointer type for retrieving a value by key from the database
  *
+ * @note The value buffer must be large enough to hold the value.
+ *	   The maximum length of the value is defined by K_DBM_VALUE_MAX_LENGTH.
  * @param key The key to retrieve
  * @param value Pointer to store the retrieved value
  * @param value_buffer_size Size of the buffer to store the value
@@ -134,6 +136,8 @@ int k_dbm_insert(const char *key_p, const char *value_p, k_dbm_storage_t storage
  * @brief Get a value by key from the database
  *
  * This function retrieves a value associated with a given key from the database.
+ * @note Keys must be const char* and values are stored in a buffer provided by the caller.
+ *
  *
  * @param key_p Pointer to the key for which the value is to be retrieved
  * @param value_buffer_p Pointer to a variable where the retrieved value will be stored
@@ -153,6 +157,15 @@ int k_dbm_get(const char *key_p, char *value_buffer_p, size_t value_buffer_size)
  * @return Returns 0 on success, -1 otherwise
  */
 int k_dbm_delete(const char *key_p);
+
+/**
+ * @brief Get the free space in the database
+ *
+ * This function returns the number of free entries available in the database.
+ *
+ * @return Returns the number of free entries in the database
+ */
+size_t k_dbm_get_free_space(void);
 
 #ifdef __cplusplus
 }
