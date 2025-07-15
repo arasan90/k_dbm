@@ -10,7 +10,8 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Debug",
                 "K_DBM_DEV": true,
-                "K_DBM_DB_SIZE": "64"
+                "K_DBM_DB_SIZE": "64",
+                "K_DBM_VALUE_MAX_LENGTH": "32"
             }
         }
     ],

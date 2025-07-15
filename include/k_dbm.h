@@ -11,6 +11,8 @@ extern "C"
 #endif
 
 /* Include -------------------------------------------------------------------*/
+#include <stddef.h>
+
 /* Macro ---------------------------------------------------------------------*/
 #define K_DBM_LOCK_MUTEX_INFINITE_TIMEOUT (-1)
 
@@ -60,10 +62,11 @@ typedef int (*k_dbm_insert_t)(const char *key, const char *value);
  *
  * @param key The key to retrieve
  * @param value Pointer to store the retrieved value
+ * @param value_buffer_size Size of the buffer to store the value
  *
  * @return Returns 0 on success, -1 on failure
  */
-typedef int (*k_dbm_get_t)(const char *key, char **value);
+typedef int (*k_dbm_get_t)(const char *key, char *value, size_t value_buffer_size);
 
 /**
  * @brief Function pointer type for deleting a key-value pair from the database
@@ -118,7 +121,7 @@ typedef struct
 int k_dbm_init(const k_dbm_config_t *config_p);
 
 /**
- *@ brief Insert a key-value pair entry into the DB
+ * @brief Insert a key-value pair entry into the DB
  *
  * @param key_p Entry key
  * @param value_p Entry value
@@ -126,6 +129,30 @@ int k_dbm_init(const k_dbm_config_t *config_p);
  * @return 0 in case of success, -1 otherwise
  */
 int k_dbm_insert(const char *key_p, const char *value_p, k_dbm_storage_t storage);
+
+/**
+ * @brief Get a value by key from the database
+ *
+ * This function retrieves a value associated with a given key from the database.
+ *
+ * @param key_p Pointer to the key for which the value is to be retrieved
+ * @param value_buffer_p Pointer to a variable where the retrieved value will be stored
+ * @param value_buffer_size Size of the buffer to store the value
+ *
+ * @return Returns 0 on success, -1 otherwise
+ */
+int k_dbm_get(const char *key_p, char *value_buffer_p, size_t value_buffer_size);
+
+/**
+ * @brief Delete a key-value pair from the database
+ *
+ * This function deletes a key-value pair from the database based on the provided key.
+ *
+ * @param key_p Pointer to the key of the entry to be deleted
+ *
+ * @return Returns 0 on success, -1 otherwise
+ */
+int k_dbm_delete(const char *key_p);
 
 #ifdef __cplusplus
 }

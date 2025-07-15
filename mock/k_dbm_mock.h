@@ -20,6 +20,9 @@ extern "C"
 /* Variable ------------------------------------------------------------------*/
 /* Function Declaration ------------------------------------------------------*/
 DECLARE_FAKE_VALUE_FUNC(int, k_dbm_init, const k_dbm_config_t *)
+DECLARE_FAKE_VALUE_FUNC(int, k_dbm_insert, const char *, const char *, k_dbm_storage_t)
+DECLARE_FAKE_VALUE_FUNC(int, k_dbm_get, const char *, char *, size_t)
+DECLARE_FAKE_VALUE_FUNC(int, k_dbm_delete, const char *)
 
 #ifdef __cplusplus
 }

@@ -19,7 +19,9 @@ extern "C"
 #ifndef K_DBM_DB_SIZE
 #error "DB size must be defined at compile time"
 #endif
-#define K_DBM_KEY_MAX_LENGTH 32
+#ifndef K_DBM_VALUE_MAX_LENGTH
+#error "Max value length must be defined at compile time"
+#endif
 
 /* Typedef -------------------------------------------------------------------*/
 
@@ -28,9 +30,9 @@ extern "C"
  */
 typedef struct
 {
-	const char	   *key;						  //!< DB entry key
-	char			value[K_DBM_KEY_MAX_LENGTH];  //!< DB entry value
-	k_dbm_storage_t storage;					  //!< DB entry actual storage
+	const char	   *key;							//!< DB entry key
+	char			value[K_DBM_VALUE_MAX_LENGTH];	//!< DB entry value
+	k_dbm_storage_t storage;						//!< DB entry actual storage
 } k_dbm_entry_t;
 
 /**
@@ -61,6 +63,15 @@ typedef struct
  * @return -1 if no entry is free, first free entry otherwise
  */
 int k_dbm_find_first_empty_entry(void);
+
+/**
+ * @brief Find an entry by key in DB
+ *
+ * @param key_p Key to search for
+ *
+ * @return Index of the entry if found, -1 otherwise
+ */
+int k_dbm_find_entry(const char *key_p);
 
 #ifdef __cplusplus
 }

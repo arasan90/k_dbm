@@ -27,6 +27,10 @@ if(K_DBM_DEV)
     if (K_DBM_DB_SIZE)
         target_compile_definitions(${PROJECT_NAME} PUBLIC K_DBM_DB_SIZE=${K_DBM_DB_SIZE})
     endif ()
+    if (K_DBM_VALUE_MAX_LENGTH)
+        target_compile_definitions(${PROJECT_NAME} PUBLIC K_DBM_VALUE_MAX_LENGTH=${K_DBM_VALUE_MAX_LENGTH})
+    endif ()
+
 
     SET(GCC_COVERAGE_COMPILE_FLAGS "-g -O0 -coverage -fprofile-arcs -ftest-coverage")
     SET(GCC_COVERAGE_LINK_FLAGS "-coverage -lgcov")
